@@ -15,20 +15,22 @@
 </head>
 
 <body>
+    <h1>Nmap Command Game</h1>
+
+    <p>Drag and drop the command parts to form the correct Nmap command:</p>
     <div id="commands">
-        <div class="command" draggable="true" id="nmap">nmap</div>
-        <div class="command" draggable="true" id="-p">-p</div>
-        <div class="command" draggable="true" id="80">80</div>
-        <!-- Test:More commands here -->
     </div>
 
-    <div id="drop-zone">
-        <!-- Test:Dropped items will appear here -->
-    </div>
+    <p>Drop the command parts here:</p>
+
+    <div id="drop-zone"></div>
 
     <button id="submit-button">Submit</button>
-    <div id="feedback"></div>
 
+    <p id="feedback"></p>
+
+    <!--Custom JS-->
+    <script src="assets/js/game.js"></script>
 </body>
 
 </html>
