@@ -26,7 +26,7 @@ N-Mappy is an interactive learning tool designed to help users learn and remembe
 - Drag these parts down to the drop zone in the correct order to form a valid Nmap command.
 - Click "Submit" to see if your command is correct. If it is, you'll receive an explanation of the command and a new set of command parts. If it's not, you'll see the correct command and its explanation.
 - You can click "Toggle Music" to turn the background music on or off.
-- you can click "Pause" to pause the backlground video.
+- You can click "Pause" to pause the backlground video.
 
 ## Technologies Used
 
