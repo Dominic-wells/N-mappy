@@ -1,7 +1,23 @@
 // Get the drop zone, submit button, and feedback div
 const dropZone = document.getElementById("drop-zone");
+const commandsDiv = document.getElementById("commands");
 const submitButton = document.getElementById("submit-button");
 const feedback = document.getElementById("feedback");
+
+// Initialize Sortable.js on the drop-zone and commands divs
+new Sortable(dropZone, {
+  group: "shared", // set both lists to same group
+  animation: 150,
+  ghostClass: "ghost",
+  filter: ".disabled",
+});
+
+new Sortable(commandsDiv, {
+  group: "shared",
+  animation: 150,
+  ghostClass: "ghost",
+  filter: ".disabled",
+});
 
 // Define possible command parts
 let commandParts = {
@@ -37,43 +53,6 @@ let commandDescriptions = {
 // Variable to store the correct command
 let correctCommand = "";
 
-// Function to handle the start of a drag event
-// Store the ID of the dragged element
-function handleDragStart(event) {
-  event.dataTransfer.setData("text", event.target.id);
-}
-
-// Function to handle the end of a drag event
-// Clear the stored data
-function handleDragEnd(event) {
-  event.dataTransfer.clearData();
-}
-
-// Function to handle a drag over event
-// Prevent the default behavior to allow dropping
-function handleDragOver(event) {
-  event.preventDefault();
-}
-
-// Function to handle a drop event
-// Prevent the default behavior
-function handleDrop(event) {
-  event.preventDefault();
-
-  // Get the ID of the dragged element
-  // Get the dragged element
-  const data = event.dataTransfer.getData("text");
-
-  const element = document.getElementById(data);
-
-  // If the element exists
-  if (element) {
-    // Clone it and add it to the drop zone
-    const clone = element.cloneNode(true);
-    dropZone.appendChild(clone);
-  }
-}
-
 function handleSubmit() {
   // Get the dropped commands
   const droppedCommands = Array.from(dropZone.children)
@@ -98,7 +77,7 @@ function handleSubmit() {
   });
 
   // Clear commands and drop zone
-  document.getElementById("commands").innerHTML = "";
+  commandsDiv.innerHTML = "";
   dropZone.innerHTML = "";
 
   // Generate a new command
@@ -131,20 +110,12 @@ function generateNewCommand() {
     commandElement.setAttribute("id", part);
     commandElement.textContent = part;
 
-    // Add drag start and end event listeners
-    commandElement.addEventListener("dragstart", handleDragStart);
-    commandElement.addEventListener("dragend", handleDragEnd);
-
     // Add the command element to the DOM
-    document.getElementById("commands").appendChild(commandElement);
+    commandsDiv.appendChild(commandElement);
   });
 
   correctCommand = correctCommand.trim(); // Remove trailing space
 }
-
-// Add event listeners for drag over and drop events
-dropZone.addEventListener("dragover", handleDragOver);
-dropZone.addEventListener("drop", handleDrop);
 
 // Add event listener for submit button click event
 submitButton.addEventListener("click", handleSubmit);
