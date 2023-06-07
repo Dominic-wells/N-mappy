@@ -19,6 +19,21 @@ let commandStructures = [
   ["scanners", "targets"],
 ];
 
+// Info to be passed to the feedback div
+let commandDescriptions = {
+  nmap: "nmap is the actual command so should always begin with this.",
+  "-p": "The -p option allows you to specify the port number.",
+  "-sS": "-sS is used to perform a TCP SYN scan.",
+  "-O": "-O is used to enable OS detection.",
+  "-v": "-v is used for verbose mode, which increases the amount of information the command displays.",
+  "--script": "--script is used to specify a script that the scan will run.",
+  80: "Port 80 is commonly used for HTTP traffic.",
+  443: "Port 443 is commonly used for HTTPS traffic.",
+  22: "Port 22 is commonly used for SSH.",
+  3389: "Port 3389 is commonly used for Microsoft's Remote Desktop Protocol (RDP).",
+  "192.30.255.113": "192.30.255.113 is the target IP address.",
+};
+
 // Variable to store the correct command
 let correctCommand = "";
 
@@ -59,7 +74,6 @@ function handleDrop(event) {
   }
 }
 
-// Function to handle the submit button click event
 function handleSubmit() {
   // Get the dropped commands
   const droppedCommands = Array.from(dropZone.children)
@@ -68,24 +82,27 @@ function handleSubmit() {
 
   // If the dropped commands match the correct command
   if (droppedCommands === correctCommand) {
-    // Give positive feedback and generate a new command
-    feedback.textContent = `Correct! This command will scan the target. Here comes the next command!`;
-
-    // Clear commands and drop zone
-    document.getElementById("commands").innerHTML = "";
-    dropZone.innerHTML = "";
-
-    generateNewCommand();
+    // Give positive feedback
+    feedback.textContent = `Correct! This command will scan the target.`;
   } else {
-    // Give negative feedback and generate a new command
-    feedback.textContent = `Incorrect. The correct command was: ${correctCommand}. Try again with a new command.`;
-
-    // Clear commands and drop zone
-    document.getElementById("commands").innerHTML = "";
-    dropZone.innerHTML = "";
-
-    generateNewCommand();
+    // Give negative feedback
+    feedback.textContent = `Incorrect. The correct command was: ${correctCommand}.`;
   }
+
+  // Explain the command
+  correctCommand.split(" ").forEach((part) => {
+    let description = commandDescriptions[part];
+    if (description) {
+      feedback.textContent += `\n${part}: ${description}`;
+    }
+  });
+
+  // Clear commands and drop zone
+  document.getElementById("commands").innerHTML = "";
+  dropZone.innerHTML = "";
+
+  // Generate a new command
+  generateNewCommand();
 }
 
 // Function to generate a new command

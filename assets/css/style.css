@@ -1,6 +1,71 @@
+body {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 400;
+    height: 100%
+}
+
+#myBtn,
+#music-toggle {
+    position: fixed;
+    top: 20px;
+    z-index: 9999;
+}
+
+#myBtn {
+    right: 130px;
+}
+
+#music-toggle {
+    right: 20px;
+}
+
+#myVideo {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.viewport-header {
+    position: relative;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3vw;
+    line-height: 1.2;
+    font-size: 3vw;
+    text-align: center;
+}
+
+span {
+    display: block;
+    font-size: 10vw;
+    letter-spacing: -1.3vw;
+}
+
+main {
+    backdrop-filter: blur(8.99px);
+    background: rgba(black, 0.66);
+    color: white;
+    position: relative;
+    padding: 1rem;
+    text-align: center;
+}
+
 #commands,
 #drop-zone {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     margin-bottom: 20px;
 }
@@ -8,7 +73,7 @@
 .command {
     margin: 5px;
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: black;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: move;
