@@ -19,6 +19,22 @@ body {
     right: 20px;
 }
 
+@media (max-width:576px) {
+
+    /* Button */
+    #myBtn {
+        right: 363px;
+        top: 26px;
+    }
+
+    /* Music toggle */
+    #music-toggle {
+        right: 12px;
+        top: 28px;
+    }
+
+}
+
 #myVideo {
     object-fit: cover;
     width: 100vw;
