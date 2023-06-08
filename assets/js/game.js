@@ -22,7 +22,8 @@ new Sortable(commandsDiv, {
 // Define possible command parts
 let commandParts = {
   scanners: ["nmap"],
-  options: ["-p", "-sS", "-O", "-v", "--script"],
+  options: [ "-sS", "-O", "-v"],
+  portScans: ["-p"],
   ports: ["80", "443", "22", "3389"],
   targets: ["192.30.255.113"],
 };
@@ -37,9 +38,9 @@ let wrongCommandParts = {
 
 // Define possible command structures
 let commandStructures = [
-  ["scanners", "options", "ports", "targets"],
+  ["scanners", "options", "portScans" ,"ports", "targets"],
   ["scanners", "options", "targets"],
-  ["scanners", "ports", "targets"],
+  ["scanners", "portScans" ,"ports", "targets"],
   ["scanners", "targets"],
 ];
 
