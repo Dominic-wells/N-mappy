@@ -5,14 +5,14 @@ const submitButton = document.getElementById("submit-button");
 const feedback = document.getElementById("feedback");
 
 // Initialize Sortable.js on the drop-zone and commands divs
-new Sortable(dropZone, {
-  group: "shared", // set both lists to same group
+const sortableDropZone = new Sortable(dropZone, {
+  group: "shared", // set both lists to the same group
   animation: 150,
   ghostClass: "ghost",
   filter: ".disabled",
 });
 
-new Sortable(commandsDiv, {
+const sortableCommandsDiv = new Sortable(commandsDiv, {
   group: "shared",
   animation: 150,
   ghostClass: "ghost",
@@ -20,7 +20,7 @@ new Sortable(commandsDiv, {
 });
 
 // Define possible command parts
-let commandParts = {
+const commandParts = {
   scanners: ["nmap"],
   options: ["-p", "-sS", "-O", "-v", "--script"],
   ports: ["80", "443", "22", "3389"],
@@ -28,15 +28,23 @@ let commandParts = {
 };
 
 // Define wrong command parts
-let wrongCommandParts = {
+const wrongCommandParts = {
   scanners: ["Nm"],
   options: ["-pP", "-SS", "-oO", "-xc", "---script"],
   ports: ["70000", "800000"],
   targets: ["0.0.0.0"],
 };
 
+// Merge the commandParts and wrongCommandParts
+const allCommandParts = {
+  scanners: [...commandParts.scanners, ...wrongCommandParts.scanners],
+  options: [...commandParts.options, ...wrongCommandParts.options],
+  ports: [...commandParts.ports, ...wrongCommandParts.ports],
+  targets: [...commandParts.targets, ...wrongCommandParts.targets],
+};
+
 // Define possible command structures
-let commandStructures = [
+const commandStructures = [
   ["scanners", "options", "ports", "targets"],
   ["scanners", "options", "targets"],
   ["scanners", "ports", "targets"],
@@ -44,8 +52,8 @@ let commandStructures = [
 ];
 
 // Info to be passed to the feedback div
-let commandDescriptions = {
-  nmap: "nmap is the actual command so should always begin with this.",
+const commandDescriptions = {
+  nmap: "nmap is the actual command and should always begin with this.",
   "-p": "The -p option allows you to specify the port number.",
   "-sS": "-sS is used to perform a TCP SYN scan.",
   "-O": "-O is used to enable OS detection.",
@@ -71,30 +79,32 @@ let commandDescriptions = {
 // Variable to store the correct command
 let correctCommand = "";
 
-// Function to generate a new command
+// Function to generate a new command this is called when the page loads
+// and when the user submits a command using the submit button
+// corrrect syntax and incorrect syntax displayed
 function generateNewCommand() {
   // Choose a random structure
-  let randomStructureIndex = Math.floor(
+  const randomStructureIndex = Math.floor(
     Math.random() * commandStructures.length
   );
-  let structure = commandStructures[randomStructureIndex];
+  const structure = commandStructures[randomStructureIndex];
 
   correctCommand = ""; // Clear the correct command
 
-  let commandElements = []; // Store all generated command elements here
+  const commandElements = []; // Store all generated command elements here
 
   // Generate a part for each part type in the structure
   structure.forEach((partType) => {
-    let partOptions = commandParts[partType];
-    let randomPartIndex = Math.floor(Math.random() * partOptions.length);
-    let part = partOptions[randomPartIndex];
+    const partOptions = commandParts[partType];
+    const randomPartIndex = Math.floor(Math.random() * partOptions.length);
+    const part = partOptions[randomPartIndex];
 
     // If the part type is a port and `-p` doesn't exist, add `-p`
     if (partType === "ports" && !correctCommand.includes("-p")) {
       correctCommand += "-p ";
 
       // Create option `-p` command element
-      let optionElement = document.createElement("div");
+      const optionElement = document.createElement("div");
       optionElement.classList.add("command");
       optionElement.setAttribute("draggable", true);
       optionElement.setAttribute("id", "-p");
@@ -108,13 +118,30 @@ function generateNewCommand() {
     correctCommand += part + " ";
 
     // Create command element
-    let commandElement = document.createElement("div");
+    const commandElement = document.createElement("div");
     commandElement.classList.add("command");
     commandElement.setAttribute("draggable", true);
     commandElement.setAttribute("id", part);
     commandElement.textContent = part;
 
     // Add the commandElement to commandElements array
+    commandElements.push(commandElement);
+  });
+
+  // After generating the correct command elements, add some wrong command parts to the mix
+  Object.keys(wrongCommandParts).forEach((partType) => {
+    const partOptions = wrongCommandParts[partType];
+    const randomPartIndex = Math.floor(Math.random() * partOptions.length);
+    const part = partOptions[randomPartIndex];
+
+    // Create wrong command element
+    const commandElement = document.createElement("div");
+    commandElement.classList.add("command");
+    commandElement.setAttribute("draggable", true);
+    commandElement.setAttribute("id", part);
+    commandElement.textContent = part;
+
+    // Add the wrong commandElement to commandElements array
     commandElements.push(commandElement);
   });
 
@@ -157,7 +184,7 @@ function handleSubmit() {
 
   // Explain the command
   correctCommand.split(" ").forEach((part) => {
-    let description = commandDescriptions[part];
+    const description = commandDescriptions[part];
     if (description) {
       feedback.textContent += `\n${part}: ${description}`;
     }
