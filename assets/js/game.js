@@ -27,6 +27,14 @@ let commandParts = {
   targets: ["192.30.255.113"],
 };
 
+// Define wrong command parts
+let wrongCommandParts = {
+  scanners: ["Nm"],
+  options: ["-pP", "-SS", "-oO", "-xc", "---script"],
+  ports: ["70000", "800000"],
+  targets: ["0.0.0.0"],
+};
+
 // Define possible command structures
 let commandStructures = [
   ["scanners", "options", "ports", "targets"],
@@ -43,15 +51,94 @@ let commandDescriptions = {
   "-O": "-O is used to enable OS detection.",
   "-v": "-v is used for verbose mode, which increases the amount of information the command displays.",
   "--script": "--script is used to specify a script that the scan will run.",
+  "---script": "This is not a valid option.",
+  "-pP": "This is not a valid option.",
+  "-SS": "This is not a valid option.",
+  "-oO": "This is not a valid option.",
+  "-xc": "This is not a valid option.",
   80: "Port 80 is commonly used for HTTP traffic.",
   443: "Port 443 is commonly used for HTTPS traffic.",
   22: "Port 22 is commonly used for SSH.",
   3389: "Port 3389 is commonly used for Microsoft's Remote Desktop Protocol (RDP).",
   "192.30.255.113": "192.30.255.113 is the target IP address.",
+  Nm: "This is not a valid option.",
+  "--incorrect": "This is not a valid option.",
+  70000: "This port number is not valid.",
+  800000: "This port number is not valid.",
+  "0.0.0.0": "This is not a valid target.",
 };
 
 // Variable to store the correct command
 let correctCommand = "";
+
+// Function to generate a new command
+function generateNewCommand() {
+  // Choose a random structure
+  let randomStructureIndex = Math.floor(
+    Math.random() * commandStructures.length
+  );
+  let structure = commandStructures[randomStructureIndex];
+
+  correctCommand = ""; // Clear the correct command
+
+  let commandElements = []; // Store all generated command elements here
+
+  // Generate a part for each part type in the structure
+  structure.forEach((partType) => {
+    let partOptions = commandParts[partType];
+    let randomPartIndex = Math.floor(Math.random() * partOptions.length);
+    let part = partOptions[randomPartIndex];
+
+    // If the part type is a port and `-p` doesn't exist, add `-p`
+    if (partType === "ports" && !correctCommand.includes("-p")) {
+      correctCommand += "-p ";
+
+      // Create option `-p` command element
+      let optionElement = document.createElement("div");
+      optionElement.classList.add("command");
+      optionElement.setAttribute("draggable", true);
+      optionElement.setAttribute("id", "-p");
+      optionElement.textContent = "-p";
+
+      // Add the optionElement to commandElements array
+      commandElements.push(optionElement);
+    }
+
+    // Add to correct command
+    correctCommand += part + " ";
+
+    // Create command element
+    let commandElement = document.createElement("div");
+    commandElement.classList.add("command");
+    commandElement.setAttribute("draggable", true);
+    commandElement.setAttribute("id", part);
+    commandElement.textContent = part;
+
+    // Add the commandElement to commandElements array
+    commandElements.push(commandElement);
+  });
+
+  // Function to shuffle an array
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Shuffle commandElements array
+  shuffleArray(commandElements);
+
+  // Clear the commands div
+  commandsDiv.innerHTML = "";
+
+  // Add all elements from commandElements to the DOM
+  commandElements.forEach((element) => {
+    commandsDiv.appendChild(element);
+  });
+
+  correctCommand = correctCommand.trim(); // Remove trailing space
+}
 
 function handleSubmit() {
   // Get the dropped commands
@@ -82,39 +169,6 @@ function handleSubmit() {
 
   // Generate a new command
   generateNewCommand();
-}
-
-// Function to generate a new command
-function generateNewCommand() {
-  // Choose a random structure
-  let randomStructureIndex = Math.floor(
-    Math.random() * commandStructures.length
-  );
-  let structure = commandStructures[randomStructureIndex];
-
-  correctCommand = ""; // Clear the correct command
-
-  // Generate a part for each part type in the structure
-  structure.forEach((partType) => {
-    let partOptions = commandParts[partType];
-    let randomPartIndex = Math.floor(Math.random() * partOptions.length);
-    let part = partOptions[randomPartIndex];
-
-    // Add to correct command
-    correctCommand += part + " ";
-
-    // Create command element
-    let commandElement = document.createElement("div");
-    commandElement.classList.add("command");
-    commandElement.setAttribute("draggable", true);
-    commandElement.setAttribute("id", part);
-    commandElement.textContent = part;
-
-    // Add the command element to the DOM
-    commandsDiv.appendChild(commandElement);
-  });
-
-  correctCommand = correctCommand.trim(); // Remove trailing space
 }
 
 // Add event listener for submit button click event
