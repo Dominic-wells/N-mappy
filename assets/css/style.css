@@ -4,35 +4,10 @@ body {
     height: 100%
 }
 
-#myBtn,
-#music-toggle {
-    position: fixed;
-    top: 20px;
-    z-index: 9999;
-}
-
-#myBtn {
-    right: 130px;
-}
-
-#music-toggle {
-    right: 20px;
-}
-
-@media (max-width:576px) {
-
-    /* Button */
-    #myBtn {
-        right: 363px;
-        top: 26px;
-    }
-
-    /* Music toggle */
-    #music-toggle {
-        right: 12px;
-        top: 28px;
-    }
-
+.button-bar {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
 #myVideo {
@@ -51,6 +26,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 h1 {

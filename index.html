@@ -33,17 +33,18 @@
     <video autoplay muted loop id="myVideo">
         <source src="assets/video/background3.mp4" type="video/mp4">
     </video>
-    <button id="myBtn" onclick="myFunction()">Pause</button>
-
 
     <!--The Music-->
     <audio id="background-music">
         <source src="assets/sounds/nexus-img-main-version-22138-02-54.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <button id="music-toggle">Toggle Music</button>
 
     <header class="viewport-header">
+        <div class="button-bar">
+            <button id="myBtn" onclick="myFunction()">Pause</button>
+            <button id="music-toggle">Toggle Music</button>
+        </div>
         <h1>
             Learn Nmap with
             <span>N-Mappy</span>
